@@ -1,24 +1,46 @@
-var ducks=[];
+let url = "http://localhost:8762/duck/ducks";
+var ducks = [];
 
+
+function preload() {
+
+    httpGet(url, 'json', function (response) {
+        for (let i = 0; i < response.length; i++) {
+            ducks.push(new Duck(response[i].coordinate.x, response[i].coordinate.y))
+        }
+        console.log("im here")
+    })
+}
 
 function setup() {
     console.log("hi");
-    createCanvas(640,480);
-    for ( let i = 0; i <5; i++){
-        ducks[i]= new Duck(i*100,i*80)
-    }
+    createCanvas(640, 480);
 }
 
-function draw(){
+function draw() {
     background(60);
-    for (var i = 0;i < ducks.length;i++){
+    httpGet(url, 'json', function (response) {
+        for (let i = 0; i < response.length; i++) {
+            ducks[i].x=response[i].coordinate.x;
+            ducks[i].y=response[i].coordinate.y;
+        }
+    });
+    for (var i = 0; i < ducks.length; i++) {
         ducks[i].show();
-        ducks[i].move();
     }
     noStroke();
-    fill(255,0,0);
-    ellipse(mouseX,mouseY,8,8);
+    fill(255, 0, 0);
+    ellipse(mouseX, mouseY, 8, 8);
 }
-function mousePressed(){
-    console.log(mouseX,mouseY);
+
+function mouseClicked() {
+    let data = {
+        x:mouseX,
+        y:mouseY
+    };
+    console.log(mouseX, mouseY);
+    httpPost("http://localhost:8762/shooter/shoot",data,function(response){
+        console.log(response)
+    })
+
 }
