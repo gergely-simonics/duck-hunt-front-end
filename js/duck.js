@@ -1,4 +1,5 @@
-function Duck(x,y) {
+function Duck(id,x,y) {
+    this.id= id;
     this.x = x;
     this.y = y;
 
@@ -8,9 +9,6 @@ function Duck(x,y) {
         ellipse(this.x,this.y,20,20);
     };
 
-    this.move = function(){
-        this.x += 2
-    }
 
 
 
